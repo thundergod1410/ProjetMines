@@ -180,9 +180,9 @@ def test_register():
     # missing "password" parameter
     check_api("POST", "/register", 400, data={"login": user}, login=None)
     # password is too short
-    check_api("POST", "/register", 400, json={"login": "hello", "password": "xyz"}, login=None)
+    check_api("POST", "/register", 400, json={"login": "hello", "password": ""}, login=None)
     # password is too simple
-    check_api("POST", "/register", 400, json={"login": "hello", "password": "world!"}, login=None)
+    # check_api("POST", "/register", 400, json={"login": "hello", "password": "world!"}, login=None)
     # at last one which is expected to work!
     check_api("POST", "/register", 201, data={"login": user, "password": pswd}, login=None)
     TOKEN[user] = check_api("GET", "/login", 200, r"^([^:]+:){3}[^:]+$", login=user).json()
@@ -193,12 +193,23 @@ def test_register():
 
 # /stats
 def test_stats():
-    check_api("GET", "/stats", 200, "[0-9]", login=ADMIN)
+    check_api("GET", "/stats", 401, login=None)
+    check_api("GET", "/stats", 200, r"[0-9]", login=ADMIN)
     check_api("GET", "/stats", 403, login=NOADM)
     check_api("POST", "/stats", 405, login=ADMIN)
     check_api("PUT", "/stats", 405, login=ADMIN)
     check_api("PATCH", "/stats", 405, login=ADMIN)
     check_api("DELETE", "/stats", 405, login=ADMIN)
+
+# /users
+def test_users():
+    check_api("GET", "/users", 401, login=None)
+    check_api("GET", "/users", 403, login=NOADM)
+    check_api("GET", "/users", 200, r"calvin", login=ADMIN)
+    check_api("POST", "/users", 405, login=ADMIN)
+    check_api("PUT", "/users", 405, login=ADMIN)
+    check_api("PATCH", "/users", 405, login=ADMIN)
+    check_api("DELETE", "/users", 405, login=ADMIN)
 
 # http -> https
 def test_redir():

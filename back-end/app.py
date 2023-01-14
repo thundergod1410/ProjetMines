@@ -1,7 +1,3 @@
-#
-# Projet Mine d'Or
-#
-
 import os
 import re
 import datetime
@@ -115,6 +111,12 @@ def post_register(login: str, password: str):
 @app.get("/login", authorize="ALL", auth="basic")
 def get_login(user: fsa.CurrentUser):
     return json(app.create_token(user)), 200
+
+# ???
+# GET /users
+@app.get("/users", authorize="ADMIN")
+def get_users():
+    return json(db.get_auth_all()), 200
 
 # DELETE /users/<login>  # while testing only…
 if app.config.get("APP_TEST", False):

@@ -17,6 +17,11 @@ FROM Auth
 WHERE login = :login
 FOR UPDATE;
 
+-- name: get_auth_all
+SELECT login, isAdmin
+FROM Auth
+ORDER BY 1;
+
 -- name: insert_auth!
 INSERT INTO Auth(login, password, isAdmin)
 VALUES (:login, :password, :is_admin);
