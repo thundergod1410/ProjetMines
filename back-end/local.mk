@@ -2,7 +2,7 @@
 # Project Settings
 #
 
-APP	= projet
+APP	= minedor
 
 USER	= $(APP)
 HOST	= mobapp.minesparis.psl.eu
