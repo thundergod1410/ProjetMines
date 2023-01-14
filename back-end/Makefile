@@ -64,7 +64,7 @@ clean.venv: clean
 #
 venv:
 	$(PYTHON) -m venv venv
-	. venv/bin/activate
+	source venv/bin/activate
 	pip install -U pip
 	pip install pytest requests mypy pytype flake8 types-requests
 	pip install FlaskSimpleAuth cachetools anodb passlib bcrypt psycopg
@@ -100,6 +100,7 @@ $(APP).wsgi:
 	  echo "from app import app as application"
 	} > $@
 
+$(F.csv): venv
 %.csv: %.in
 	source venv/bin/activate
 	./pass2csv.py < $< > $@
@@ -112,7 +113,7 @@ $(APP).wsgi:
 FLASK		= flask
 FLASK.opt	= --host="0.0.0.0"
 
-app.pid: version.py .postgres
+app.pid: venv version.py .postgres
 	source venv/bin/activate
 	export APP_NAME=$(APP) APP_CONFIG="local.conf"
 	type $(FLASK) || exit 1  # check for flask
@@ -168,7 +169,7 @@ check.version:
 check.local.version: check.version
 
 .PHONY: check.pytest
-check.pytest: $(F.src)
+check.pytest: venv $(F.src)
 	shopt -s -o errexit
 	source venv/bin/activate
 	# start test server
@@ -186,19 +187,19 @@ check.pytest: $(F.src)
 check.local.pytest: check.pytest
 
 .PHONY: check.mypy
-check.mypy: $(F.py) $(F.gen)
+check.mypy: venv $(F.py) $(F.gen)
 	# report syntax and type errors
 	source venv/bin/activate
 	mypy --ignore-missing-imports --implicit-optional $(F.py) $(F.gen)
 
 .PHONY: check.pytype
-check.pytype: $(F.py) $(F.gen)
+check.pytype: venv $(F.py) $(F.gen)
 	# report syntax and type errors
 	source venv/bin/activate
 	pytype $(F.py) $(F.gen)
 
 .PHONY: check.flake8
-check.flake8: $(F.py) $(F.gen)
+check.flake8: venv $(F.py) $(F.gen)
 	source venv/bin/activate
 	flake8 --ignore=E128,E302,E305,F401,E402,E501 $(F.py) $(F.gen)
 
