@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS Auth(
+  lid SERIAL8 PRIMARY KEY,
+  login TEXT UNIQUE NOT NULL
+    CHECK (LENGTH(login) >= 3 AND login ~ E'^[a-zA-Z][-a-zA-Z0-9_@\\.]*$'),
+  email TEXT DEFAULT NULL CHECK (email IS NULL OR email ~ E'@'),
+  password TEXT NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  isAdmin BOOLEAN NOT NULL DEFAULT FALSE
+);
