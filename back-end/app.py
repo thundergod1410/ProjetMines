@@ -62,7 +62,7 @@ def get_version(sleep: float = 0.0):
         "git-date": version.date,
         # auth
         "auth": app.config.get("FSA_AUTH", None),
-        "user": app.current_user(),
+        "user": app.get_user(required=False),
         # database
         "db-type": app.config["DB_TYPE"],
         "db-driver": db._db,
