@@ -51,7 +51,7 @@ DB		= $(APP)
 
 .PHONY: clean
 clean: full-stop
-	-dropdb $(DB)
+	dropdb $(DB) || exit 0
 	$(RM) app.log app.pid $(F.gen) $(F.csv) *~
 	$(RM) -r __pycache__ .pytype .pytest_cache .postgres
 
