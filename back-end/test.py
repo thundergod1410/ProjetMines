@@ -206,10 +206,40 @@ def test_users():
     check_api("GET", "/users", 401, login=None)
     check_api("GET", "/users", 403, login=NOADM)
     check_api("GET", "/users", 200, r"calvin", login=ADMIN)
-    check_api("POST", "/users", 405, login=ADMIN)
-    check_api("PUT", "/users", 405, login=ADMIN)
+    check_api("GET", "/users?filter=c%", 200)
+    check_api("GET", "/users", 200, data={"filter":"%a"}, login=ADMIN)
+
+    check_api("PUT", "/users", 405, login=ADMIN) # not defined
     check_api("PATCH", "/users", 405, login=ADMIN)
     check_api("DELETE", "/users", 405, login=ADMIN)
+
+        # HTTP parameters…
+    check_api("POST", "/users", 201, data={"login":"identifiant", "password":"motdepasse"})
+    check_api("GET", "/users", 200, r"identifiant")
+    check_api("POST", "/users", 500, data={"login":"identifiant", "password":"motdepasse"}) # login already exists
+    check_api("POST", "/users", 201, data={"login":"identifiant2", "password":"motdepasse", "email":"le.mouillet@gmail.com", "isAdmin":False})
+    check_api("GET", "/users", 200, r"identifiant2")
+    check_api("POST", "/users", 403, data={"login":"identifiant3", "password":"motdepasse"}, login=NOADM) # no permission
+
+        # JSON parameters…
+    check_api("POST", "/users", 201, json={"login":"identifiant4", "password":"motdepasse"})
+    check_api("GET", "/users", 200, r"identifiant")
+    check_api("POST", "/users", 500, json={"login":"identifiant4", "password":"motdepasse"})
+    check_api("POST", "/users", 201, json={"login":"identifiant5", "password":"motdepasse", "email":"le.mouillet@gmail.com", "isAdmin":False})
+    check_api("GET", "/users", 200, r"identifiant2")
+    check_api("POST", "/users", 403, json={"login":"identifiant6", "password":"motdepasse"}, login=NOADM)
+
+def test_users_login():
+    check_api("GET","/users/identifiant", 200, r".")
+    check_api("GET","/users/foo", 404)
+    check_api("GET","/users/kiva", 401, login=None)
+    check_api("GET","/users/kiva", 403, login=NOADM)
+
+    check_api("DELETE", "/users/foo", 404)
+    check_api("DELETE", "/users/identifiant", 403, login=NOADM)
+    check_api("DELETE", "/users/identifiant", 401, login=None)
+    check_api("DELETE", "/users/identifiant", 204, login=ADMIN)
+
 
 # http -> https
 def test_redir():

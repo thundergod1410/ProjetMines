@@ -104,7 +104,7 @@ def post_register(login: str, password: str):
         return f"user {login} already registered", 409
     log.debug(f"user registration: {login}")
     # NOTE passwords have constraints, see configuration
-    db.insert_auth(login=login, password=app.hash_password(password), is_admin=False)
+    db.insert_auth(login=login, password=app.hash_password(password), isAdmin=False, email=None)
     return "", 201
 
 # GET /login
@@ -112,21 +112,54 @@ def post_register(login: str, password: str):
 def get_login(user: fsa.CurrentUser):
     return json(app.create_token(user)), 200
 
-# ???
 # GET /users
 @app.get("/users", authorize="ADMIN")
-def get_users():
-    return json(db.get_auth_all()), 200
+def get_users(filter: str = None):
+    if filter is not None:
+        res = db.get_auth_filter(filter=filter)
+    else:
+        res = db.get_auth_all()
+    return json(res), 200
 
-# DELETE /users/<login>  # while testing only…
-if app.config.get("APP_TEST", False):
-    @app.delete("/users/<login>", authorize="ADMIN")
-    def delete_users_login(login: str):
-        if not db.get_auth_login_lock(login=login):
-            return "no such user", 404
-        # in the real world a user would rather be disactivated
-        db.delete_user(login=login)
-        return "", 204
+# POST /users
+@app.post("/users", authorize="ADMIN")
+def post_users(login: str, password: str, isAdmin: bool = False, email: str = None):
+    # this fails if the login already exists
+    db.insert_auth(login=login, password=password, isAdmin=isAdmin, email=email) 
+    return "", 201
+
+# GET /users/<login>
+@app.get("/users/<login>", authorize="ADMIN")
+def get_users_login(login: str):
+    res = db.get_auth_login(login=login)
+    if not res:
+        return "", 404
+    else:
+        return json(res), 200
+
+# DELETE /users/<login>
+@app.delete("/users/<login>", authorize="ADMIN")
+def delete_users_login(login: str):
+    if not db.check_auth_login(login=login):
+        return "no such user", 404
+    db.delete_auth(login=login)
+    return "", 204
+
+# PUT /users/<login>
+# PATCH /users/<login>
+@app.route("/users/<login>", methods=["PUT", "PATCH"], authorize="ADMIN")
+def patch_users_login(login: str, password: str = None, isAdmin: bool = None, email: str = None):
+    res = db.check_users_login(login=login)
+    if not res:
+        return "", 404
+    if password is not None:
+        db.upd_auth_email(login=login, password=app.hash_password(password))
+    if isAdmin is not None:
+        db.upd_auth_isAdmin(login=login, isAdmin=isAdmin)
+    if email is not None:
+        db.upd_auth_email(login=login, email=email)
+    return "", 204
+
 
 # ADD NEW CODE HERE
 
