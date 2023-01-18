@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, View, StyleSheet } from 'react-native';
 import AllUsers from './AllUsers.react';
-import Welcome from './Welcome.react';
-import Userpage from './Userpage.react';
+import Welcome from '../Ad/Welcome.react';
+import MyPage from '../MyPage/Userpage.react';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -25,13 +25,13 @@ const styles = StyleSheet.create({
  * @param {()=>{}} logOutUser return to the logged out state
  * @returns
  */
-export default function MainView({ authToken, logoutUser}) {
+export default function MainView({ authToken, logoutUser, username}) {
 
   return (
     <View style={styles.mainContainer}>
       <View
         style={styles.cardContainer}>
-        <AllUsers authToken={authToken}/>
+        <MyPage authToken={authToken} username={username}/>
       </View>
       <View
         style={styles.bottomButton}>

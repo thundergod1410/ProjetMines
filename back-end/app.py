@@ -131,7 +131,7 @@ def post_users(login: str, password: str, isAdmin: bool = False, email: str = No
 # GET /users/<login>
 @app.get("/users/<login>", authorize="ADMIN")
 def get_users_login(login: str):
-    res = db.get_auth_login(login=login)
+    res = db.get_user_login(login=login)
     if not res:
         return "", 404
     else:

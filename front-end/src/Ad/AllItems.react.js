@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
 
-import DefaultProfilePicture from './DefaultProfilePicture.react';
+import DefaultProfilePicture from '../main/DefaultProfilePicture.react';
 
 const styles = StyleSheet.create({
     profilePicture: {

@@ -33,7 +33,7 @@ export default function Root() {
       <Header username={username} />
       <View style={styles.container}>
         {authToken != null ?
-          <MainView authToken={authToken} logoutUser={logoutUser} />
+          <MainView authToken={authToken} logoutUser={logoutUser} username={username} />
           : <LoggedOutView onLogUser={onLogUser} />}
       </View>
     </View>

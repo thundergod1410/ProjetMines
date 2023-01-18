@@ -13,6 +13,9 @@ SELECT VERSION();
 -- name: get_auth_login^
 SELECT password, isAdmin FROM Auth WHERE login = :login;
 
+-- name: get_user_login^
+SELECT login, email, password, isAdmin FROM Auth WHERE login = :login;
+
 -- name: check_auth_login
 SELECT password, isAdmin FROM Auth WHERE login = :login FOR UPDATE;
 
