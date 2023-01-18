@@ -35,6 +35,7 @@ The following files are available in the `back-end` directory:
 - [`truncate.sql`](truncate.sql) cleanup schema contents.
 - [`drop.sql`](drop.sql) drop application schema.
 - [`test.py`](test.py) [*pytest*](https://docs.pytest.org/) script.
+- [`pass2csv.py`](pass2csv.py) génération des comptes à partir de `test_users.in`
 
 ## Useful Make Targets
 
