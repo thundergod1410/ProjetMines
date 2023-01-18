@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, View, Text, StyleSheet, ActivityIndicator, Button } from 'react-native';
 import KivCard from '../common/KivCard.react';
-import AllUsersItem from './AllUsersItem.react';
+import AllItems from './AllItems.react';
 import { sendRequest } from '../common/sendRequest';
 
 const styles = StyleSheet.create({
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   title: {
-    fontSize: 24,
+    fontSize: 42,
   },
   profilePicture: {
     width: 100,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 /**
  * Displays all the users in Kivapp
  */
-export default function AllUsers({ authToken }) {
+export default function Welcome({ authToken }) {
   const [users, setUsers] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasPermissionError, setPermissionError] = useState(false);
@@ -57,7 +57,7 @@ export default function AllUsers({ authToken }) {
     getAllUsersRequest();
   }, [authToken]);
 
-  const renderItem = ({item}) => <AllUsersItem item={item} key={item.name} />;
+  const renderItem = ({item}) => <AllItems item={item} key={item.name} />;
 
   return (
     <KivCard>
@@ -65,7 +65,7 @@ export default function AllUsers({ authToken }) {
         style={styles.titleContainer}>
         <Text
           style={styles.title}>
-          All Users
+          Dernières annonces
         </Text>
       </View>
       {hasPermissionError && <View style={styles.incorrectWarning}>

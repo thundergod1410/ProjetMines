@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, View, StyleSheet } from 'react-native';
 import AllUsers from './AllUsers.react';
+import Welcome from './Welcome.react';
+import Userpage from './Userpage.react';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -12,8 +14,8 @@ const styles = StyleSheet.create({
     marginBottom:8,
   },
   bottomButton: {
-    flexShrink:0,
-    flexBasis:100,
+    alignItems: 'flex-end'
+
   },
 });
 
@@ -24,11 +26,12 @@ const styles = StyleSheet.create({
  * @returns
  */
 export default function MainView({ authToken, logoutUser}) {
+
   return (
     <View style={styles.mainContainer}>
       <View
         style={styles.cardContainer}>
-        <AllUsers authToken={authToken} />
+        <AllUsers authToken={authToken}/>
       </View>
       <View
         style={styles.bottomButton}>

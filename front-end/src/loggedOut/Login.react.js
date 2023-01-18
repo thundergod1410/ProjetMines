@@ -14,17 +14,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   incorrectWarning: {
-    backgroundColor: '#FF8A80',
+    backgroundColor: '#FFD700',
     padding: 4,
     borderRadius: 4,
     marginBottom: 4,
   },
   buttonRow: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   button: {
     flexGrow: 1,
-    padding: 2
+    padding: 2,
   },
 });
 
@@ -71,7 +71,7 @@ export default function Login({ onSuccess, onCancel }) {
       <KivTextInput label="Password" value={password} onChangeText={value => setPassword(value)} />
       <View style={styles.buttonRow}>
         <View style={styles.button}>
-          <Button title="< Create Account" disabled={isLoading} onPress={() => { onCancel(); }} />
+          <Button title="Create Account" disabled={isLoading} onPress={() => { onCancel(); }} />
         </View>
         <View style={styles.button}>
           <Button title="Login" disabled={isLoading} onPress={() => { sendLoginRequest(); }} />

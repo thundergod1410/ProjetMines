@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     padding: 16,
     width: '100%',
     height: '100%',
+    flex: 1
   }
 });
 
@@ -28,7 +29,7 @@ export default function Root() {
   }
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <Header username={username} />
       <View style={styles.container}>
         {authToken != null ?
