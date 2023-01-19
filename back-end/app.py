@@ -131,7 +131,7 @@ def post_users(login: str, password: str, isAdmin: bool = False, email: str = No
 # GET /users/<login>
 @app.get("/users/<login>", authorize="ADMIN")
 def get_users_login(login: str):
-    res = db.get_user_login(login=login)
+    res = db.get_auth_data_login(login=login)
     if not res:
         return "", 404
     else:
@@ -161,7 +161,20 @@ def patch_users_login(login: str, password: str = None, isAdmin: bool = None, em
     return "", 204
 
 
-# ADD NEW CODE HERE
+# GET /ann
+@app.get("/ann", authorize="ALL")
+def get_ann(filter: str = None):
+    if filter is None:
+        res = db.get_ann_all()
+    else:
+        res = db.get_ann_filter(filter=filter)
+    return json(res), 200
+
+# POST /ann
+@app.post("/ann", authorize="ALL")
+def post_ann(title: str, starting_price: float, lid: int, description: str = None, expiration: str = None, current_price: float = None, ceiling_price: float = None):
+    db.insert_ann(title=title, description=description, expiration=expiration, starting_price=starting_price, current_price=current_price, ceiling_price=ceiling_price, lid=lid)
+    return "", 201
 
 # SHOULD STAY AS LAST LOC
 log.debug("running…")

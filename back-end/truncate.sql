@@ -1,1 +1,2 @@
 TRUNCATE Auth;
+TRUNCATE Ann;
