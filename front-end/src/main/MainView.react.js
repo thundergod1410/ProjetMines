@@ -36,7 +36,10 @@ export default function MainView({ authToken, logoutUser, username, navigation})
         <Button title="Log out" onPress={logoutUser} />
         <Button
       title="My Page"
-      onPress={() => {navigation.navigate('MyPage')}}
+      onPress={() => {navigation.navigate('MyPage', {
+        username: username,
+        authToken: authToken,
+      })}}
       />
       </View>
     </View>

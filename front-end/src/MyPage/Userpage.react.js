@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
 /**
  * Displays all the users in Kivapp
  */
-export default function MyPage({ authToken, username }) {
+export default function MyPage({navigation, route}) {
   const [user, setUser] = useState(null);
-  const [hasPermissionError, setPermissionError] = useState(false);
+  const {username, authToken} = route.params;
 
   const getMyPageRequest = () => {
     console.log('Axios', username)
@@ -53,7 +53,7 @@ export default function MyPage({ authToken, username }) {
 
   return (
     <View>
-      <Header username={username} />
+      <Header username={username}></Header>
     <KivCard>
       <View
         style={styles.titleContainer}>
@@ -61,14 +61,6 @@ export default function MyPage({ authToken, username }) {
           style={styles.title}>
           My page
         </Text>
-      </View>
-      {hasPermissionError && <View style={styles.incorrectWarning}>
-        <Text
-          style={styles.inputLabel}>
-          Access Forbidden
-        </Text>
-      </View>}
-      {/* {user != null ? <AllUsersItem item={user}/> : null} */}
       {user != null ? 
         <View>
         <Text style={styles.text}> Login : {user[0]}</Text> 
@@ -76,6 +68,7 @@ export default function MyPage({ authToken, username }) {
         <Text style={styles.text}> Admin : {user[3].toString()}</Text>
         </View>
       : null}
+      </View>
       <Button title="Reload" onPress={() => { getMyPageRequest(); }} />
     </KivCard>
     </View>

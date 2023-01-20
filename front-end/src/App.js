@@ -12,6 +12,7 @@ import MainView from "./main/MainView.react";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Root">
