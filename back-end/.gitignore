@@ -10,3 +10,4 @@ assets/index.html
 .pytest_cache
 __pycache__
 venv
+*.swp

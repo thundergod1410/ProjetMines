@@ -133,7 +133,7 @@ def post_users(login: str, password: str, isAdmin: bool = False, email: str = No
 def get_users_login(login: str):
     res = db.get_auth_data_login(login=login)
     if not res:
-        return "", 404
+        return "no such user", 404
     else:
         return json(res), 200
 
@@ -170,11 +170,42 @@ def get_ann(filter: str = None):
         res = db.get_ann_filter(filter=filter)
     return json(res), 200
 
+# GET /ann/filter
+@app.get("/ann/filter", authorize="ALL")
+def get_ann_filter(title_filter: str = '%', description_filter: str = '%', price_max: float = float('inf'), over: bool = False):
+    res = db.get_ann_filter_new(title_filter=title_filter, description_filter=description_filter, price_max=price_max, over=over)
+    return json(res), 200
+
 # POST /ann
 @app.post("/ann", authorize="ALL")
-def post_ann(title: str, starting_price: float, lid: int, description: str = None, expiration: str = None, current_price: float = None, ceiling_price: float = None):
-    db.insert_ann(title=title, description=description, expiration=expiration, starting_price=starting_price, current_price=current_price, ceiling_price=ceiling_price, lid=lid)
+def post_ann(title: str, starting_price: float, lid: int, description: str = None, expiration: str = None, ceiling_price: float = None):
+    db.insert_ann(title=title, description=description, expiration=expiration, starting_price=starting_price, current_price=starting_price, ceiling_price=ceiling_price, lid=lid)
     return "", 201
+
+# GET /ann/<aid>
+@app.get("/ann/<aid>", authorize="ALL")
+def get_ann_aid(aid: int):
+    res = db.get_ann_aid(aid=aid)
+    if not res:
+        return "", 404
+    else:
+        return json(res), 200
+
+# DELETE /ann/<aid>
+@app.delete("/ann/<aid>", authorize="ADMIN")
+def delete_ann_aid(aid: int):
+    if not db.check_ann_aid(aid=aid):
+        return "no such announcement", 404
+    db.delete_ann(aid=aid)
+    return "", 204
+
+# GET /ann/user/<login>
+@app.get("/ann/user/<login>", authorize="ALL")
+def get_ann_login(login: str):
+    if not db.check_auth_login(login=login):
+        return "no such user", 404
+    res = db.get_ann_login(login=login)
+    return json(res), 200
 
 # SHOULD STAY AS LAST LOC
 log.debug("running…")

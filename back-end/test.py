@@ -258,6 +258,25 @@ def test_ann():
     check_api("POST", "/ann", 201, json={"title":"Paire de mocassins", "description":"Ils font 79 euros. Évidemment, ça ça fait un peu cher. Mais le problème, ils sont super beaux. Depuis qu'tu les as vus, t'as trop hâte. T'as trop envie de les essayer. Quand tu les auras, tu retrouveras la patate.", "starting_price":79.0, "lid":1})
     check_api("GET", "/ann", 200, r"Paire de mocassins", data={'filter':'%mocassins%'})
 
+def test_ann_aid():
+    check_api("GET", "/ann/1", 200, login=ADMIN)
+    check_api("GET", "/ann/1", 200, login=NOADM)
+    check_api("GET", "/ann/1", 401, login=None)
+    check_api("GET", "/ann/foo", 404)
+
+    check_api("DELETE", "/ann/1", 204, login=ADMIN)
+    check_api("DELETE", "/ann/1", 403, login=NOADM)
+    check_api("DELETE", "/ann/1", 401, login=None)
+    check_api("DELETE", "/ann/foo", 404)
+
+def test_ann_user():
+    check_api("GET", "/ann/user/calvin",200, login=ADMIN)
+    check_api("GET", "/ann/user/calvin",200, login=NOADM)
+    check_api("GET", "/ann/user/calvin",401, login=None)
+    check_api("GET", "/ann/user/foo", 404)
+
+def test_ann_filter_new():
+    check_api("GET", "/ann/filter", 200, data={"title_filter":"%Montre%", "description_filter":"%Rolex%", "price_max": 300.0, "over":False} )
 
 # http -> https
 def test_redir():
