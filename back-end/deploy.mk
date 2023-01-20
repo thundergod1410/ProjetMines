@@ -27,7 +27,8 @@ deploy: perms
 	$(RSYNC) $(F.conf) $(USER)@$(HOST):conf/
 	$(RSYNC) $(F.py) $(F.sql) $(F.gen) $(F.csv) $(USER)@$(HOST):app/
 	$(RSYNC) www/*.html $(USER)@$(HOST):www/
-	[ -d assets ] && $(RSYNC) assets/. $(USER)@$(HOST):assets/.
+	# [ -d assets ] && $(RSYNC) assets/. $(USER)@$(HOST):assets/.
+	[ -d static ] && $(RSYNC) static/. $(USER)@$(HOST):static/.
 	ssh $(USER)@$(HOST) \
 	  psql \
 	    -1 \
