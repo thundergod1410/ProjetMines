@@ -44,11 +44,11 @@ UPDATE Auth SET isAdmin = :isAdmin WHERE login = :login;
 
 
 -- name: get_ann_all
-SELECT title, description FROM Ann ORDER BY 1;
+SELECT title, description, publication, expiration, starting_price, current_price, ceiling_price  FROM Ann ORDER BY 1;
 
 
 -- name: get_ann_filter
-SELECT title, description FROM Ann WHERE title LIKE :filter ORDER BY 1;
+SELECT title, description, publication, expiration, starting_price, current_price, ceiling_price FROM Ann WHERE title LIKE :filter ORDER BY 1;
 
 -- name: insert_ann!
 INSERT INTO Ann(title, starting_price, lid, description, expiration, current_price, ceiling_price)

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button, View, StyleSheet } from 'react-native';
-import AllUsers from './AllUsers.react';
-import Welcome from '../Ad/Welcome.react';
-import MyPage from '../MyPage/Userpage.react';
+import AllAnn from '../Ann/Welcome.react'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -25,17 +23,21 @@ const styles = StyleSheet.create({
  * @param {()=>{}} logOutUser return to the logged out state
  * @returns
  */
-export default function MainView({ authToken, logoutUser, username}) {
+export default function MainView({ authToken, logoutUser, username, navigation}) {
 
   return (
     <View style={styles.mainContainer}>
       <View
         style={styles.cardContainer}>
-        <MyPage authToken={authToken} username={username}/>
+        <AllAnn authToken={authToken} username={username} navigation={navigation}/>
       </View>
       <View
         style={styles.bottomButton}>
         <Button title="Log out" onPress={logoutUser} />
+        <Button
+      title="My Page"
+      onPress={() => {navigation.navigate('MyPage')}}
+      />
       </View>
     </View>
   );

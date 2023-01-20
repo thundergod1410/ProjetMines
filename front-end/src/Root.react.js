@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function Root() {
+export default function Root({navigation}) {
   const [username, setUsername] = useState(null);
   const [authToken, setAuthToken] = useState(null);
 
@@ -33,7 +33,7 @@ export default function Root() {
       <Header username={username} />
       <View style={styles.container}>
         {authToken != null ?
-          <MainView authToken={authToken} logoutUser={logoutUser} username={username} />
+          <MainView authToken={authToken} logoutUser={logoutUser} username={username} navigation={navigation}/>
           : <LoggedOutView onLogUser={onLogUser} />}
       </View>
     </View>

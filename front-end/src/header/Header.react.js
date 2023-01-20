@@ -26,6 +26,7 @@ export default function Header({ username }) {
         : <Text>Logged in as {username}</Text>;
     return (
     <View>
+        <Text>{text}</Text>
         <View style={styles.titleContainer}><Text style={styles.title}>Mine D'Or</Text></View>
     </View>
     );

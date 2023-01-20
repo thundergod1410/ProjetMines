@@ -3,8 +3,7 @@ import { FlatList, View, Text, StyleSheet, ActivityIndicator, Button } from 'rea
 import axios from 'axios';
 
 import KivCard from '../common/KivCard.react';
-import { sendRequest } from '../common/sendRequest';
-import AllUsersItem from '../main/AllUsersItem.react';
+import Header from '../header/Header.react';
 
 const styles = StyleSheet.create({
   titleContainer: {
@@ -53,6 +52,8 @@ export default function MyPage({ authToken, username }) {
   }, []);
 
   return (
+    <View>
+      <Header username={username} />
     <KivCard>
       <View
         style={styles.titleContainer}>
@@ -77,5 +78,6 @@ export default function MyPage({ authToken, username }) {
       : null}
       <Button title="Reload" onPress={() => { getMyPageRequest(); }} />
     </KivCard>
+    </View>
   );
 }
