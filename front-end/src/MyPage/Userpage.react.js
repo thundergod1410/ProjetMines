@@ -75,6 +75,7 @@ export default function MyPage({ authToken, username }) {
         <Text style={styles.text}> Admin : {user[3].toString()}</Text>
         </View>
       : null}
+      <Button title="Reload" onPress={() => { getMyPageRequest(); }} />
     </KivCard>
   );
 }
