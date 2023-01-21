@@ -51,9 +51,9 @@ DB		= $(APP)
 
 .PHONY: clean
 clean: full-stop
-	dropdb $(DB) || exit 0
 	$(RM) app.log app.pid $(F.gen) $(F.csv) *~
 	$(RM) -r __pycache__ .pytype .pytest_cache .postgres
+	dropdb $(DB) || exit 0
 
 .PHONY: clean.venv
 clean.venv: clean
