@@ -169,8 +169,8 @@ def get_ann():
 
 # GET /ann/filter
 @app.get("/ann/filter", authorize="ALL")
-def get_ann_filter(title_filter: str = '%', description_filter: str = '%', price_max: float = float('inf'), ongoing_only: bool = False):
-    res = db.get_ann_filter(title_filter=title_filter, description_filter=description_filter, price_max=price_max, ongoing_only=ongoing_only)
+def get_ann_filter(title_filter: str = '%', description_filter: str = '%', price_max: float = float('inf'), over: bool = False):
+    res = db.get_ann_filter_new(title_filter=title_filter, description_filter=description_filter, price_max=price_max, over=over)
     return json(res), 200
 
 # POST /ann

@@ -246,17 +246,23 @@ def test_ann():
     check_api("GET", "/ann", 401, login=None)
     check_api("GET", "/ann", 200, r"Montre", login=NOADM)
     check_api("GET", "/ann", 200, r"Montre", login=ADMIN)
-    check_api("GET", "/ann?filter=M%", 200, r"Montre")
-    check_api("GET", "/ann?filter=a%", 200)
 
     check_api("PUT", "/ann", 405)
     check_api("PATCH", "/ann", 405)
 
     check_api("POST", "/ann", 201, data={"title":"Petit blouson en daim", "description":"Avec lui tu seras plus fort. Il t'aidera dans les moments durs. Avec lui tu frimeras à mort. Il t'aidera et guérira tes blessures.", "starting_price": 89.4, "lid":1})
-    check_api("GET", "/ann", 200, r"Petit blouson en daim", data={'filter':'%daim%'})
+    check_api("GET", "/ann", 200, r"Petit blouson en daim")
 
     check_api("POST", "/ann", 201, json={"title":"Paire de mocassins", "description":"Ils font 79 euros. Évidemment, ça ça fait un peu cher. Mais le problème, ils sont super beaux. Depuis qu'tu les as vus, t'as trop hâte. T'as trop envie de les essayer. Quand tu les auras, tu retrouveras la patate.", "starting_price":79.0, "lid":1})
-    check_api("GET", "/ann", 200, r"Paire de mocassins", data={'filter':'%mocassins%'})
+    check_api("GET", "/ann", 200, r"Paire de mocassins")
+
+def test_ann_filter():
+    check_api("GET", "/ann/filter", 200)
+    check_api("GET", "/ann/filter", 200, data={"title_filter":"%t-shirt%"})
+    check_api("GET", "/ann/filter", 200, data={"description_filter":"%t-shirt%"})
+    check_api("GET", "/ann/filter", 200, data={"price_max":300.0})
+    check_api("GET", "/ann/filter", 200, data={"ongoing_only":True})
+    check_api("GET", "/ann/filter", 200, data={"title_filter":"%t-shirt%","description_filter":"%t-shirt%", "price_max":300.0, "ongoing_only":True})
 
 def test_ann_aid():
     check_api("GET", "/ann/1", 200, login=ADMIN)
@@ -274,9 +280,6 @@ def test_ann_user():
     check_api("GET", "/ann/user/calvin",200, login=NOADM)
     check_api("GET", "/ann/user/calvin",401, login=None)
     check_api("GET", "/ann/user/foo", 404)
-
-def test_ann_filter_new():
-    check_api("GET", "/ann/filter", 200, data={"title_filter":"%Montre%", "description_filter":"%Rolex%", "price_max": 300.0, "over":False} )
 
 # http -> https
 def test_redir():

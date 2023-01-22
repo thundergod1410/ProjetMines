@@ -1,13 +1,11 @@
 -- SQL queries to be fed to anosql
 
 
-
 -- name: now$
 SELECT CURRENT_TIMESTAMP;
 
 -- name: version$
 SELECT VERSION();
-
 
 
 -- name: get_auth_login^
@@ -41,13 +39,18 @@ UPDATE Auth SET email = :email WHERE login = :login;
 UPDATE Auth SET isAdmin = :isAdmin WHERE login = :login;
 
 
-
-
 -- name: get_ann_all
 SELECT title, description, publication, expiration, starting_price, current_price, ceiling_price  FROM Ann ORDER BY 1;
 
 -- name: get_ann_filter
-SELECT title, description, publication, expiration, starting_price, current_price, ceiling_price FROM Ann WHERE title LIKE :filter ORDER BY 1;
+SELECT * FROM Ann
+WHERE title LIKE :title_filter AND description LIKE :description_filter AND current_price <= :price_max AND (NOT over OR NOT :ongoing_only);
+
+-- name: get_ann_aid^
+SELECT * FROM Ann WHERE aid = :aid;
+
+-- name: get_ann_login^
+SELECT * FROM Ann JOIN Auth USING (lid) WHERE login = :login;
 
 -- name: check_ann_aid
 SELECT title FROM Ann WHERE aid = :aid FOR UPDATE;
@@ -58,13 +61,3 @@ VALUES (:title, :starting_price, :lid, :description, TO_DATE(:expiration, 'YYYY-
 
 -- name : delete_ann!
 DELETE FROM Ann WHERE aid = :aid;
-
--- name: get_ann_aid^
-SELECT * FROM Ann WHERE aid = :aid;
-
--- name: get_ann_login^
-SELECT * FROM Ann JOIN Auth USING (lid) WHERE login = :login;
-
--- name: get_ann_filter_new
-SELECT * FROM Ann
-WHERE title LIKE :title_filter AND description LIKE :description_filter AND current_price <= :price_max AND over = :over;
